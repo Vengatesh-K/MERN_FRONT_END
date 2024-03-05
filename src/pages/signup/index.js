@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
@@ -75,11 +75,11 @@ const Signup = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#e4e4f1" }}>
+    <div style={{ backgroundColor: "#d6dcf8" }}>
       <Container className="d-flex justify-content-center align-items-center vh-100">
         <Row className="w-50 bg-light p-4 rounded shadow">
           <Col md={12}>
-            <h1 className="mb-4 text-center">Signup</h1>
+            <h1 className="mb-4 text-center">Sign Up</h1>
           </Col>
           {/* <Form> */}
           <Col md={12}>
@@ -156,6 +156,14 @@ const Signup = () => {
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Sign Up
           </Button>
+
+          {/* <a href={navigation("/login")}> </a> */}
+
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              Already have an account
+            </Link>
+          </div>
           {/* </Form> */}
         </Row>
       </Container>

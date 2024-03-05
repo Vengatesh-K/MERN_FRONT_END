@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { fetchUserSuccess } from "../../redux/actions";
 
@@ -102,7 +102,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#e4e4f1" }}>
+    <div style={{ backgroundColor: "#d6dcf8" }}>
       <Container className="d-flex justify-content-center align-items-center vh-100">
         <Row className="w-50 bg-light p-4 rounded shadow">
           <Col md={12}>
@@ -147,10 +147,39 @@ const Login = () => {
             </Form.Group>
           </Col>
 
-          <Button variant="primary" type="submit" onClick={handleSubmit}>
-            {/* <Button variant="primary" type="submit" onClick={() => {}}> */}
-            Login
-          </Button>
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: 10,
+              display: "flex",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Button
+              variant="secondary"
+              type="submit"
+              onClick={() => {
+                navigation("/");
+              }}
+              style={{ width: 150 }}
+            >
+              Back
+            </Button>
+            <Button
+              variant="primary"
+              type="submit"
+              style={{ width: 150 }}
+              onClick={handleSubmit}
+            >
+              Login
+            </Button>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              Forgot Password?
+            </Link>
+          </div>
         </Row>
       </Container>
     </div>
