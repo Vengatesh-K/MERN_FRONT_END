@@ -20,9 +20,11 @@
 // }
 import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./userReducer";
+import tokenReducer from "./tokenReducer";
 
 const rootReducer = combineReducers({
   userReducer: userReducer,
+  tokenReducer: tokenReducer,
 });
 
 export default rootReducer;

@@ -3,14 +3,11 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { fetchUserSuccess } from "../../redux/actions";
+import { fetchAuthTokenSuccess, fetchUserSuccess } from "../../redux/actions";
 
 import { useDispatch, useSelector } from "react-redux";
-
-// import // fetchUserRequest,
-// fetchUserSuccess,
-// fetchUserFailure,
-// "../../redux/actions";
+import { setToken } from "../../components/authToken/authToken";
+import { showMessage } from "../../components/toaster/toaster";
 
 const Login = () => {
   const [InputFields, setInputField] = useState({
@@ -23,10 +20,6 @@ const Login = () => {
 
   const navigation = useNavigate();
 
-  // const userData = useSelector((state) => state);
-
-  useEffect(() => {}, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -35,19 +28,6 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   searchMovies("spiderman");
-  // }, []);
-
-  // const USER_API = "http://www.omdbapi.com?apikey=927a9e9f";
-  // const API_URL = 'http://www.omdbapi.com?apikey=3ec89900';
-
-  // const searchMovies = async (title) => {
-  //   const response = await fetch(`${USER_API}&s=${title}`);
-  //   const data = await response.json();
-  //   // setMovies(data.Search);
-  //   console.log(data, "dddddddddddd");
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,33 +35,48 @@ const Login = () => {
 
     setErrorText(err);
 
-    // if (Object.keys(err).length === 0) {
-    if (Object.keys(err)) {
-      // console.log("try function");
+    if (Object.keys(err).length === 0) {
       try {
         const res = await axios.post("http://localhost:7000/login", {
           data: InputFields,
         });
 
-        console.log(res.data.data, "Login response 💚💚💚");
+        console.log(res.data.data, "Login response 💚");
 
         if (res?.data?.status === "success") {
-          alert("Login successfully 💚💚💚");
           dispatch(fetchUserSuccess(res?.data?.data));
+          dispatch(
+            fetchAuthTokenSuccess({
+              authToken: res?.data?.accessToken,
+              isLogin: true,
+            })
+          );
 
           localStorage.setItem("login_data", JSON.stringify(res?.data));
-          console.log(res?.data, "res?.dataaaaaaaaa");
-          navigation("/home");
+
+          setToken(res?.data?.accessToken);
+
+          if (res?.data?.data.loginStatus === true) {
+            setTimeout(() => {
+              navigation("/home");
+              window.location.reload();
+            }, 100);
+          }
+
+          showMessage("success", "Login successfully 💚", 3000);
         } else {
           console.log("Login Error response");
+          showMessage("error", "Login failed");
         }
       } catch (error) {
-        alert(
-          ` ${error.response.data} ❌❌❌` || "User credentials not found "
+        showMessage(
+          "error",
+          `${error.response.data || "User credentials not found "} ❌`
         );
       }
     } else {
       console.log("Please fill all required fields");
+      showMessage("error", "Please fill all required fields", 3000);
     }
   };
 
@@ -102,9 +97,12 @@ const Login = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#d6dcf8" }}>
+    <div style={{ backgroundColor: "#ebedf5" }}>
       <Container className="d-flex justify-content-center align-items-center vh-100">
-        <Row className="w-50 bg-light p-4 rounded shadow">
+        <Row
+          className="w-50 bg-light p-4 rounded "
+          style={{ boxShadow: "20px 20px 30px rgba(105, 145, 237, 0.7)" }}
+        >
           <Col md={12}>
             <h1 className="mb-4 text-center">Login</h1>
           </Col>
@@ -118,7 +116,6 @@ const Login = () => {
                 type="email"
                 placeholder="Enter email"
                 value={InputFields.email}
-                // value={"test@gmail.com"}
                 name={"email"}
                 onChange={(val) => handleChange(val)}
               />
@@ -136,7 +133,6 @@ const Login = () => {
               <Form.Control
                 type="password"
                 placeholder="Password"
-                // value={"123456"}
                 value={InputFields.password}
                 name={"password"}
                 onChange={(val) => handleChange(val)}
@@ -147,37 +143,22 @@ const Login = () => {
             </Form.Group>
           </Col>
 
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: 10,
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Button
-              variant="secondary"
-              type="submit"
-              onClick={() => {
-                navigation("/");
-              }}
-              style={{ width: 150 }}
-            >
-              Back
-            </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              style={{ width: 150 }}
-              onClick={handleSubmit}
-            >
-              Login
-            </Button>
-          </div>
+          <Button variant="primary" type="submit" onClick={handleSubmit}>
+            Login
+          </Button>
 
-          <div style={{ textAlign: "center", marginTop: 10 }}>
-            <Link to="/login" style={{ textDecoration: "none" }}>
+          <div style={{ textAlign: "left", marginTop: 10 }}>
+            <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
               Forgot Password?
+            </Link>
+          </div>
+          <div style={{ textAlign: "left", marginTop: 10, display: "flex" }}>
+            <p>You don't have an account? </p>
+            <Link
+              to="/signup"
+              style={{ textDecoration: "none", marginLeft: 10 }}
+            >
+              Sign up.
             </Link>
           </div>
         </Row>
