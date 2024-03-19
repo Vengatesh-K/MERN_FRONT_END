@@ -1,19 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Spinner,
-  Navbar,
-  Nav,
-  NavbarBrand,
-  NavbarToggle,
-  NavbarCollapse,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// import image from "../../../src/assets/images/blue.jpg";
 import videoSrc from "../../../src/assets/videos/ggg.mp4";
 import profile_icon from "../../../src/assets/images/profile_icon.jpg";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +30,7 @@ const Home = () => {
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 5000);
   }, []);
 
   return (
@@ -100,7 +87,6 @@ const Home = () => {
                 {" "}
                 <a
                   href="/editProfile"
-                  // href={navigation("/home")}
                   style={{
                     color: "white",
                     fontSize: 20,
@@ -119,13 +105,14 @@ const Home = () => {
                 }}
               >
                 <img
-                  src={profile_icon}
-                  height={35}
-                  width={35}
+                  src={userData?.image || userRdxData?.image || profile_icon}
+                  height={50}
+                  width={50}
                   style={{
                     borderRadius: "50%",
                     background: "transparent",
                     marginLeft: 10,
+                    objectFit: "cover",
                   }}
                 />
               </a>
@@ -133,8 +120,12 @@ const Home = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
-      <Container className="d-flex justify-content-center align-items-center vh-100 ">
+      <Container
+        xs={4}
+        md={4}
+        lg={4}
+        className="d-flex justify-content-center align-items-center vh-100 "
+      >
         <Row
           className="position-absolute translate-middle text-white"
           style={{
@@ -142,6 +133,8 @@ const Home = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            marginLeft: 350,
+            marginTop: 100,
           }}
         >
           <h1
@@ -149,6 +142,7 @@ const Home = () => {
               fontSize: 40,
               fontWeight: "bold",
               fontFamily: "serif",
+              width: "100%",
             }}
           >
             Welcome ,{" "}
@@ -172,13 +166,6 @@ const Home = () => {
             </Button>
           </Col>
         </Row>
-
-        {isLoading && (
-          <div className="d-flex justify-content-center align-items-center vh-100 position-absolute">
-            <Spinner animation="border" size="sm" />
-            <p className="ms-3">Loading...</p>
-          </div>
-        )}
       </Container>
     </>
   );

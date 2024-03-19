@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { showMessage } from "../../components/toaster/toaster";
 
 const Signup = () => {
   const [InputFields, setInputField] = useState({
@@ -37,36 +38,43 @@ const Signup = () => {
         });
 
         if (response) {
-          console.log(response, "Signup response 💚💚💚");
-          alert("Signup submitted 💚💚💚");
-          navigation("/login");
+          console.log(response, "Signup response 💚");
+          showMessage("success", "Signup successfully 💚", 3000);
+          navigation("/");
         } else {
           console.log("Signup Error response");
         }
       } catch (error) {
-        console.log(error, "Signup catch  error");
+        console.log(error.response.data.message, "Signup catch  error");
+
+        showMessage(
+          "error",
+          `${error.response.data.message || error.message} ❌`,
+          3000
+        );
       }
     } else {
       console.log("Please fill all required fields");
+      showMessage("error", `Please fill all required fields`, 3000);
     }
   };
 
   const handleError = (e) => {
     var error = {};
 
-    if (InputFields.name == undefined || InputFields.name == "") {
+    if (InputFields.name === undefined || InputFields.name === "") {
       error.name = "Please enter name";
       setError(true);
     }
-    if (InputFields.email == undefined || InputFields.email == "") {
+    if (InputFields.email === undefined || InputFields.email === "") {
       error.email = "Please enter email";
       setError(true);
     }
-    if (InputFields.phone == undefined || InputFields.phone == "") {
+    if (InputFields.phone === undefined || InputFields.phone === "") {
       error.phone = "Please enter phone number";
       setError(true);
     }
-    if (InputFields.password == undefined || InputFields.password == "") {
+    if (InputFields.password === undefined || InputFields.password === "") {
       error.password = "Please enter password";
       setError(true);
     }
@@ -75,13 +83,15 @@ const Signup = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#e4e4f1" }}>
+    <div style={{ backgroundColor: "#d6dcf8" }}>
       <Container className="d-flex justify-content-center align-items-center vh-100">
-        <Row className="w-50 bg-light p-4 rounded shadow">
+        <Row
+          className="w-50 bg-light p-4 rounded "
+          style={{ boxShadow: "20px 20px 30px rgba(105, 145, 237, 0.7)" }}
+        >
           <Col md={12}>
-            <h1 className="mb-4 text-center">Signup</h1>
+            <h1 className="mb-4 text-center">Sign Up</h1>
           </Col>
-          {/* <Form> */}
           <Col md={12}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -156,7 +166,12 @@ const Signup = () => {
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Sign Up
           </Button>
-          {/* </Form> */}
+
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              Already have an account
+            </Link>
+          </div>
         </Row>
       </Container>
     </div>
