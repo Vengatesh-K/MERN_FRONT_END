@@ -8,6 +8,10 @@ import { fetchAuthTokenSuccess, fetchUserSuccess } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../components/authToken/authToken";
 import { showMessage } from "../../components/toaster/toaster";
+import { baseUrl } from "../../components/utilities/server";
+
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [InputFields, setInputField] = useState({
@@ -37,7 +41,7 @@ const Login = () => {
 
     if (Object.keys(err).length === 0) {
       try {
-        const res = await axios.post("http://localhost:7000/login", {
+        const res = await axios.post(`${baseUrl}login`, {
           data: InputFields,
         });
 
@@ -63,7 +67,7 @@ const Login = () => {
             }, 100);
           }
 
-          showMessage("success", "Login successfully 💚", 3000);
+          showMessage("success", "Login successfully 💚", 2000);
         } else {
           console.log("Login Error response");
           showMessage("error", "Login failed");
@@ -76,7 +80,7 @@ const Login = () => {
       }
     } else {
       console.log("Please fill all required fields");
-      showMessage("error", "Please fill all required fields", 3000);
+      showMessage("error", "Please fill all required fields", 2000);
     }
   };
 
@@ -104,9 +108,13 @@ const Login = () => {
           style={{ boxShadow: "20px 20px 30px rgba(105, 145, 237, 0.7)" }}
         >
           <Col md={12}>
-            <h1 className="mb-4 text-center">Login</h1>
+            <h1
+              className="mb-4 text-center"
+              style={{ fontSize: 40, fontWeight: "bold" }}
+            >
+              Login
+            </h1>
           </Col>
-
           <Col md={12}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -124,7 +132,6 @@ const Login = () => {
               )}
             </Form.Group>
           </Col>
-
           <Col md={12}>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -142,11 +149,9 @@ const Login = () => {
               )}
             </Form.Group>
           </Col>
-
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Login
           </Button>
-
           <div style={{ textAlign: "left", marginTop: 10 }}>
             <Link to="/forgotPassword" style={{ textDecoration: "none" }}>
               Forgot Password?
@@ -161,6 +166,24 @@ const Login = () => {
               Sign up.
             </Link>
           </div>
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              console.log("credentialResponse", credentialResponse);
+
+              const decoded = await jwtDecode(credentialResponse?.credential);
+
+              console.log(decoded, "ddddddddddddddddd");
+
+              setInputField({
+                ...InputFields,
+                ["email"]: decoded.email,
+                // ["password"]: "fsklfdlk",
+              });
+            }}
+            onError={() => {
+              console.log("Login Failed credentialResponse");
+            }}
+          />
         </Row>
       </Container>
     </div>

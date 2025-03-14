@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { showMessage } from "../../components/toaster/toaster";
+import { baseUrl } from "../../components/utilities/server";
 
 const Signup = () => {
   const [InputFields, setInputField] = useState({
@@ -33,13 +34,13 @@ const Signup = () => {
 
     if (Object.keys(err).length === 0) {
       try {
-        const response = await axios.post("http://localhost:7000/signup", {
+        const response = await axios.post(`${baseUrl}signup`, {
           data: InputFields,
         });
 
         if (response) {
           console.log(response, "Signup response 💚");
-          showMessage("success", "Signup successfully 💚", 3000);
+          showMessage("success", "Signup successfully 💚", 2000);
           navigation("/");
         } else {
           console.log("Signup Error response");
@@ -50,12 +51,12 @@ const Signup = () => {
         showMessage(
           "error",
           `${error.response.data.message || error.message} ❌`,
-          3000
+          2000
         );
       }
     } else {
       console.log("Please fill all required fields");
-      showMessage("error", `Please fill all required fields`, 3000);
+      showMessage("error", `Please fill all required fields`, 2000);
     }
   };
 
@@ -90,7 +91,12 @@ const Signup = () => {
           style={{ boxShadow: "20px 20px 30px rgba(105, 145, 237, 0.7)" }}
         >
           <Col md={12}>
-            <h1 className="mb-4 text-center">Sign Up</h1>
+            <h1
+              className="mb-4 text-center"
+              style={{ fontSize: 40, fontWeight: "bold" }}
+            >
+              Sign Up
+            </h1> 
           </Col>
           <Col md={12}>
             <Form.Group className="mb-3" controlId="formBasicName">

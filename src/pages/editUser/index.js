@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import userIcon from "../../assets/images/profile_icon.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getToken, removeToken } from "../../components/authToken/authToken";
 import { showMessage } from "../../components/toaster/toaster";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { fetchUserSuccess } from "../../redux/actions";
+import imagePath from "../../components/imagePath";
+import { baseUrl } from "../../components/utilities/server";
 
 function EditProfile() {
   const [InputFields, setInputField] = useState({
@@ -19,6 +19,10 @@ function EditProfile() {
     newPassword: "",
     image: null,
   });
+
+  // imagePath.userLogo;
+
+  console.log(imagePath.userLogo, "imagePath.userLogo imagePath.userLogo");
 
   const [userId, setUserID] = useState("");
   const [Error, setError] = useState(false);
@@ -68,7 +72,7 @@ function EditProfile() {
 
     try {
       const res = await axios.post(
-        "http://localhost:7000/logout",
+        `${baseUrl}logout`,
         {
           userId: userId,
         },
@@ -83,7 +87,7 @@ function EditProfile() {
       console.log(res.data.message, "logout response 💚");
 
       if (res?.data?.status === "success") {
-        showMessage("success", `${res.data.message}`, 3000);
+        showMessage("success", `${res.data.message}`, 2000);
 
         dispatch(fetchUserSuccess({}));
         removeToken();
@@ -157,7 +161,7 @@ function EditProfile() {
 
       try {
         const response = await axios.post(
-          "http://localhost:7000/update",
+          `${baseUrl}update`,
           {
             data: InputFields,
             userId: userId,
@@ -180,7 +184,7 @@ function EditProfile() {
           showMessage(
             "success",
             `${response?.data?.message || response?.message}`,
-            3000
+            2000
           );
           // navigation("/home");
         } else {
@@ -192,12 +196,12 @@ function EditProfile() {
         showMessage(
           "error",
           `${error?.response?.data?.message || error?.message}`,
-          3000
+          2000
         );
       }
     } else {
       console.log("Please fill all required fields");
-      showMessage("error", `Please fill all required fields`, 3000);
+      showMessage("error", `Please fill all required fields`, 2000);
     }
   };
 
@@ -292,7 +296,7 @@ function EditProfile() {
         >
           <div style={{ position: "relative", display: "inline-block" }}>
             <Image
-              src={InputFields.image || userIcon}
+              src={InputFields.image || imagePath.userLogo}
               alt="Image to be edited"
               style={{
                 width: 130,
@@ -301,7 +305,7 @@ function EditProfile() {
                 borderRadius: "50%",
               }}
             />
-            <FontAwesomeIcon
+            <Image
               icon={faPencilAlt}
               style={{
                 position: "absolute",

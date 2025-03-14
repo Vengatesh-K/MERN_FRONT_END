@@ -1,68 +1,128 @@
-import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Tab,
-  Nav,
-  Card,
-  Form,
-  Button,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import CardView from "../../styleComponent/cardView";
+import imagePath from "../../components/imagePath";
 
 const ProfileSettings = () => {
   const navigation = useNavigate();
+
+  const [data, setData] = useState([
+    {
+      id: 1,
+      title: "Crud",
+      content: "Basic Crud",
+      image: imagePath.curdImg,
+    },
+    {
+      id: 2,
+      title: "Ticket",
+      content: "Ticket Booking",
+      image: imagePath.ticketImg,
+    },
+    {
+      id: 3,
+      title: "Gmail",
+      content: "Mail sender",
+      image: imagePath.gmailImg,
+    },
+    {
+      id: 4,
+      title: "Cal-C",
+      content: "Calculator Project",
+      image: imagePath.calClImg,
+    },
+  ]);
+
+  const goToProject = (item) => {
+    console.log(item, "from project");
+
+    switch (item) {
+      case 1:
+        navigation("/crud");
+        console.log("crud item working");
+
+        break;
+      case 2:
+        navigation("/TicketApp");
+        console.log("ticket item working");
+
+        break;
+      case 3:
+        navigation("/gmail");
+        console.log("gmail item working");
+
+        break;
+
+      default:
+        navigation("/maintenance");
+        console.log("default item working");
+        break;
+    }
+  };
+
   return (
-    <Container className="light-style flex-grow-1 container-p-y">
-      <h1 className="font-weight-bold py-3 mb-4">MY PROJECTS</h1>
-      <Row>
-        <Col md={3} className="pt-0">
-          <Card>
-            <Nav variant="pills" className="flex-column account-settings-links">
-              <Nav.Item>
-                <Nav.Link href="#account-general">CRUD</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#account-change-password">
-                  TICKET BOOKING
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#account-change-password">CALCULATOR</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#account-change-password">COUNTER</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#account-change-password">
-                  EMAIL SENDER
-                </Nav.Link>
-              </Nav.Item>
-              {/* Add other Nav.Item components for additional tabs */}
-            </Nav>
-          </Card>
-        </Col>
-        <Col md={9}>
-          <Tab.Content>
-            <Tab.Pane eventKey="#account-general">
-              {/* General settings content */}
-            </Tab.Pane>
-            <Tab.Pane eventKey="#account-change-password">
-              {/* Change password content */}
-            </Tab.Pane>
-            {/* Add additional Tab.Pane components for other tabs */}
-          </Tab.Content>
-        </Col>
-      </Row>
-      <div className="text-right mt-3">
-        <Button variant="danger" onClick={() => navigation("/home")}>
-          &hearts; Home page
-        </Button>
-        &nbsp;
-        {/* <Button variant="default">Cancel</Button> */}
-      </div>
-    </Container>
+    <div
+      style={{
+        backgroundColor: "#ededf9",
+        height: "100vh",
+        width: "100%",
+      }}
+    >
+      <Container className="light-style flex-grow-1 container-p-y">
+        <h1
+          className="font-weight-bold py-3 mb-4"
+          style={{ fontWeight: "700", color: "dimgray" }}
+        >
+          MY PROJECTS
+        </h1>
+        <div
+          style={{
+            borderBottom: "4px groove #faf0f0",
+            width: "100%",
+            marginBottom: 10,
+          }}
+        ></div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gridGap: "150px",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            {data.map((item, index) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+
+                    justifyContent: "center",
+                  }}
+                >
+                  <CardView
+                    data={item}
+                    index={index}
+                    img={item.image}
+                    title={item.title}
+                    content={item.content}
+                    navScreen={(item) => goToProject(item)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Container>
+    </div>
   );
 };
 

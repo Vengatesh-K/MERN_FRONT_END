@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Container, Row, Col, Button, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import videoSrc from "../../../src/assets/videos/ggg.mp4";
-import profile_icon from "../../../src/assets/images/profile_icon.jpg";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { showMessage } from "../../components/toaster/toaster";
+import imagePath from "../../components/imagePath";
+import "./style.css";
 
 const Home = () => {
   const videoRef = useRef(null);
@@ -31,7 +33,20 @@ const Home = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 5000);
+
+    // showMessage(
+    //   "success",
+    //   `Welcome ${userData?.name || userRdxData?.name} 💚`,
+    //   2000
+    // );
   }, []);
+
+  const aa = 3;
+  const bb = 4;
+
+  const cc = aa + bb;
+
+  console.log(cc);
 
   return (
     <>
@@ -42,34 +57,33 @@ const Home = () => {
         autoPlay
         className="position-absolute w-100 h-100 object-fit-cover video-background"
       >
-        <source src={videoSrc} type="video/mp4" />
+        {/* <source src={videoSrc} type="video/mp4" /> */}
+        <source
+          // src={
+          //   "https://static.videezy.com/system/resources/previews/000/041/249/original/4K_2.mp4"
+          // }
+          // src="https://cdn.pixabay.com/video/2019/10/09/27669-365224683_large.mp4"
+          src="https://cdn.pixabay.com/video/2020/04/08/35344-405897623_large.mp4"
+          type="video/mp4"
+        />
         Your browser does not support the video tag.
       </video>
       <Navbar
         expand="lg"
         className="d-flex justify-content-between position-absolute object-fit-cover w-100"
         style={{
-          borderBottom: "5px solid #9e9a9a",
-          borderRight: "3px solid #9e9a9a",
-          borderLeft: "3px solid #9e9a9a",
+          borderBottom: "5px groove #d5cfcf",
+          borderRight: "3px groove #d5cfcf",
+          borderLeft: "3px groove #d5cfcf",
+          borderTop: "4px groove #d5cfcf",
           borderRadius: 7,
           marginTop: 5,
-          marginRight: "auto",
-          marginLeft: "auto",
           padding: 10,
         }}
       >
         <Container>
-          <Navbar.Brand
-            href="#home"
-            style={{
-              color: "white",
-              fontSize: 20,
-              fontWeight: "bold",
-              fontFamily: "system-ui",
-            }}
-          >
-            Google V7
+          <Navbar.Brand href="#home" className="Brand_text">
+            <h2> Google V7</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
         </Container>
@@ -83,15 +97,14 @@ const Home = () => {
                   fontWeight: "bold",
                   fontFamily: "system-ui",
                 }}
+                className="name_text"
               >
-                {" "}
                 <a
                   href="/editProfile"
                   style={{
                     color: "white",
-                    fontSize: 20,
+                    fontSize: 25,
                     fontWeight: "bold",
-                    fontFamily: "system-ui",
                     textDecoration: "none",
                   }}
                 >
@@ -105,11 +118,13 @@ const Home = () => {
                 }}
               >
                 <img
-                  src={userData?.image || userRdxData?.image || profile_icon}
-                  height={50}
-                  width={50}
+                  src={
+                    userData?.image || userRdxData?.image || imagePath.userLogo
+                  }
+                  height={60}
+                  width={60}
                   style={{
-                    borderRadius: "50%",
+                    borderRadius: "30%",
                     background: "transparent",
                     marginLeft: 10,
                     objectFit: "cover",
@@ -133,24 +148,19 @@ const Home = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginLeft: 350,
-            marginTop: 100,
+            marginTop: 140,
+            textAlign: "center",
+            marginLeft: 650,
           }}
         >
-          <h1
-            style={{
-              fontSize: 40,
-              fontWeight: "bold",
-              fontFamily: "serif",
-              width: "100%",
-            }}
-          >
+          <h1 className="welcome_text">
             Welcome ,{" "}
             <span
               style={{
-                fontSize: 85,
+                fontSize: 100,
                 fontWeight: "bold",
                 fontFamily: "serif",
+                textAlign: "center",
               }}
             >
               {userData?.name || userRdxData?.name}
@@ -158,7 +168,7 @@ const Home = () => {
           </h1>
           <Col md={12}>
             <Button
-              variant="primary"
+              variant="outline-success"
               size="lg"
               onClick={() => navigation("/profile")}
             >

@@ -15,6 +15,13 @@ import { getToken } from "./components/authToken/authToken";
 import { useEffect, useState } from "react";
 import { fetchAuthTokenSuccess } from "./redux/actions";
 import { useAuthToken } from "./customHooks/useAuthToken";
+import MaintenancePage from "./pages/underMaintenance";
+import Curd from "./pages/crud";
+import TicketApp from "./pages/bookTicket";
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+import Gmail from "./pages/gmail";
 
 function App() {
   // const [authToken, setAuthToken] = useState();
@@ -65,23 +72,30 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <ToastContainer />
+        <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+          <ToastContainer />
 
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {authToken && (
-              <>
-                <Route path="/home" element={<Home />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/editProfile" element={<EditProfile />} />
-              </>
-            )}
+          <Router>
+            <Routes>
+              <Route exact path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* {authToken && (
+                <> */}
+              <Route path="/home" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/editProfile" element={<EditProfile />} />
+              <Route path="/crud" element={<Curd />} />
+              <Route path="/ticketApp" element={<TicketApp />} />
+              <Route path="/gmail" element={<Gmail />} />
+              <Route path="/maintenance" element={<MaintenancePage />} />
+              {/* </>
+              )} */}
 
-            <Route path="/*" element={<NotFoundPage />} />
-          </Routes>
-        </Router>
+              <Route path="/*" element={<NotFoundPage />} />
+            </Routes>
+          </Router>
+        </GoogleOAuthProvider>
+        ;
       </Provider>
     </>
   );

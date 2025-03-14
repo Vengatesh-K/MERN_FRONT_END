@@ -9,6 +9,7 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTicketAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -44,7 +45,7 @@ function Profile() {
                 {userDetails.email}
               </Card.Subtitle>
               <Button variant="primary" onClick={handleEditProfile}>
-                <FontAwesomeIcon icon={faPencil} /> Edit Profile
+                <Image src={faPencil} /> Edit Profile
               </Button>
             </Card.Body>
           </Card>

@@ -3,7 +3,7 @@ import { Container, Row, Col, Image, Button, Modal } from "react-bootstrap";
 import imagePath from "../../components/imagePath";
 import { useNavigate } from "react-router-dom";
 
-const NotFoundPage = () => {
+const MaintenancePage = () => {
   const navigation = useNavigate();
 
   return (
@@ -22,18 +22,17 @@ const NotFoundPage = () => {
             }}
           >
             <Image
-              src={imagePath.Img404}
+              src={imagePath.maintenance}
               alt="404 Not Found"
               style={{
                 height: 380,
                 width: 400,
-                borderRadius: "10%",
               }}
             />
-            <h1>Oops! We can't find the page you're looking for.</h1>
+            <h1>Oops! This page is under maintenance.</h1>
             <p>
-              The requested path may be incorrect, or the page may have been
-              removed, moved, or renamed.
+              Our developing team has been working on this page... Sorry for
+              inconvenience...
             </p>{" "}
           </Row>
         </Row>
@@ -67,4 +66,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default MaintenancePage;
